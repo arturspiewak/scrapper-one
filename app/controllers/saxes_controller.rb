@@ -16,32 +16,48 @@ class SaxesController < ApplicationController
   def create
     @address = Sax.new(sax_params)
     if wrong_address
-      data = scrape params[:sax][:address]
-      if check_in_db(data[:title])
-        if data[:error].nil?
-          @address.title = data[:title]
-          @address.price = data[:price]
-          @address.timestamp = data[:timestamp]
+      if scrape_role_access
+        data = scrape params[:sax][:address]
+        if check_in_db(data[:title])
+          if data[:error].nil?
+            @address.title = data[:title]
+            @address.price = data[:price]
+            @address.timestamp = data[:timestamp]
 
-          if @address.save
-            redirect_to @address, notice: 'Product has been scraped'
+            if @address.save
+              redirect_to @address, notice: 'Product has been scraped'
+            else
+              render 'new'
+            end
           else
-            render 'new'
+            render 'new', notice: 'Error occured'
           end
         else
-          render 'new'
+          redirect_to @address, notice: 'Product has been scraped today'
         end
       else
-        redirect_to @address
+        redirect_to root_path, notice: @error
       end
     else
-      render 'new'
+      redirect_to root_path, notice: 'Wrong address'
     end
   end
 
   private
   def sax_params
     params.require(:sax).permit(:title, :price, :timestamp, :address)
+  end
+
+  def scrape_role_access
+    length = @address.address.split('/')[4].length
+    books = @address.address.split('/')[4].include?('books')
+    if current_user.role == 'normal'
+      length < 15 ? true : (@error = "Too long url"; false)
+    elsif current_user.role == 'premium'
+      books ? true : (@error = "Do not contain 'books'"; false)
+    else
+      true
+    end
   end
 
   def scrape(url)

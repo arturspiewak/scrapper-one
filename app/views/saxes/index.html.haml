@@ -10,6 +10,12 @@
           %tr
             %td= address.title
             %td= address.price
+    %p
+      %span User:
+      = current_user.email
+      %span || Ability:
+      = current_user.role
+
     = link_to "Screape IT!", new_sax_path
     - if user_signed_in?
       = link_to "Log out", destroy_user_session_path, method: :delete
