@@ -15,6 +15,9 @@ gem 'nokogiri'
 gem 'capybara'
 gem 'pry'
 gem 'haml'
+gem 'simple_form'
+gem 'poltergeist', '~> 1.12'
+gem 'phantomjs', '~> 2.1', '>= 2.1.1.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
