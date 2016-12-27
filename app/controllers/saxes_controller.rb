@@ -1,4 +1,5 @@
 class SaxesController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @addresses = Sax.all
