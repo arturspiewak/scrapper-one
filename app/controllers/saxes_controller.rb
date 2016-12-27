@@ -1,6 +1,7 @@
 class SaxesController < ApplicationController
 
   def index
+    @addresses = Sax.all
   end
 
   def new

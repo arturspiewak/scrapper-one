@@ -1,2 +1,12 @@
 %h1 Saxes
+%table
+  %tr
+    %th Product name
+    %th Price
+  - @addresses.map do |address|
+    %tr
+      %td= address.title
+      %td= address.price
+
+
 = link_to "Screape IT!", new_sax_path
