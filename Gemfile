@@ -21,6 +21,7 @@ gem 'phantomjs', '~> 2.1', '>= 2.1.1.0'
 gem 'devise', '~> 4.2'
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'inherited_resources', github: 'activeadmin/inherited_resources'
+gem 'bootstrap-sass', '~> 3.3.6'
 
 group :development, :test do
   gem 'byebug', platform: :mri

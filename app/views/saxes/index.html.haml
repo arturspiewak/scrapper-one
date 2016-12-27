@@ -1,19 +1,20 @@
-%h1 Saxes
-%table
-  %tr
-    %th Product name
-    %th Price
-  - @addresses.map do |address|
-    %tr
-      %td= address.title
-      %td= address.price
-
-
-= link_to "Screape IT!", new_sax_path
-- if user_signed_in?
-  = link_to "Log out", destroy_user_session_path, method: :delete
-- else
-  = link_to "Log in", new_user_session_path
-  =link_to "Sign in", new_user_registration_path
-- if current_user.role == 'admin'
-  = link_to "Users list"
+.row
+  .col-md-8.col-md-offset-2
+    %h1 Saxes
+    %table.table.table-striped.table-inverse
+      .thead-inverse
+        %tr
+          %th Product name
+          %th Price
+        - @addresses.map do |address|
+          %tr
+            %td= address.title
+            %td= address.price
+    = link_to "Screape IT!", new_sax_path
+    - if user_signed_in?
+      = link_to "Log out", destroy_user_session_path, method: :delete
+    - else
+      = link_to "Log in", new_user_session_path
+      = link_to "Sign in", new_user_registration_path
+    - if current_user.role == 'admin'
+      = link_to "Admin Panel", admin_users_path
