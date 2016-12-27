@@ -25,7 +25,7 @@ class SaxesController < ApplicationController
           redirect_to @address, notice: 'Product has been scraped'
         else
           render 'new'
-        end  
+        end
       else
         render 'new'
       end
@@ -36,7 +36,7 @@ class SaxesController < ApplicationController
 
   private
   def sax_params
-    params.require(:sax).permit(:title, :price, :timestamp)
+    params.require(:sax).permit(:title, :price, :timestamp, :address)
   end
 
   def scrape(url)
