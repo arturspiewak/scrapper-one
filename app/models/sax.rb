@@ -5,6 +5,7 @@ require 'net/http'
 
 class Sax < ApplicationRecord
   attr_accessor :address
+  validates :address, presence: true
 end
 
 class Scraping
