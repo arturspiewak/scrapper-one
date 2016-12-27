@@ -4,6 +4,10 @@ class SaxesController < ApplicationController
     @addresses = Sax.all
   end
 
+  def show
+    @address ||= Sax.find(params[:id])
+  end
+
   def new
     @address = Sax.new
   end
