@@ -1,0 +1,2 @@
+class Sax < ApplicationRecord
+end

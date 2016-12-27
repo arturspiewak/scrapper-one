@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  price: 9.99
+  timestamp: 2016-12-27 14:28:45
+
+two:
+  title: MyString
+  price: 9.99
+  timestamp: 2016-12-27 14:28:45
