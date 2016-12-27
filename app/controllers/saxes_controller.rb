@@ -15,19 +15,22 @@ class SaxesController < ApplicationController
   def create
     @address = Sax.new(sax_params)
     data = scrape params[:sax][:address]
+    if check_in_db(data[:title])
+      if data[:error].nil?
+        @address.title = data[:title]
+        @address.price = data[:price]
+        @address.timestamp = data[:timestamp]
 
-    if data[:error].nil?
-      @address.title = data[:title]
-      @address.price = data[:price]
-      @address.timestamp = data[:timestamp]
-
-      if @address.save
-        redirect_to root_path
+        if @address.save
+          redirect_to @address, notice: 'Product has been scraped'
+        else
+          render 'new'
+        end  
       else
         render 'new'
       end
     else
-      render 'new'
+      redirect_to @address, notice: 'Product has been already scraped (today)'
     end
   end
 
@@ -39,5 +42,19 @@ class SaxesController < ApplicationController
   def scrape(url)
     s = Scraping.new
     s.scrape(url).to_h
+  end
+
+  def check_in_db(title)
+    @product = Sax.all.where(title: title)[0]
+    if @product.nil?
+      true
+    else
+      if @product.timestamp == Date.today.to_datetime
+        @address = @product
+        false
+      else
+        true
+      end
+    end
   end
 end
