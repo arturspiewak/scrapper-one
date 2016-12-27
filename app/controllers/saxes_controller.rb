@@ -17,13 +17,10 @@ class SaxesController < ApplicationController
     @address = Sax.new(sax_params)
     if wrong_address
       if scrape_role_access
-        data = scrape params[:sax][:address]
-        if check_in_db(data[:title])
-          if data[:error].nil?
-            @address.title = data[:title]
-            @address.price = data[:price]
-            @address.timestamp = data[:timestamp]
-
+        @data = scrape params[:sax][:address]
+        if check_in_db(@data[:title])
+          if @data[:error].nil?
+            asign
             if @address.save
               redirect_to @address, notice: 'Product has been scraped'
             else
@@ -33,7 +30,7 @@ class SaxesController < ApplicationController
             render 'new', notice: 'Error occured'
           end
         else
-          redirect_to @address, notice: 'Product has been scraped today'
+          redirect_to @address, notice: @info
         end
       else
         redirect_to root_path, notice: @error
@@ -46,6 +43,12 @@ class SaxesController < ApplicationController
   private
   def sax_params
     params.require(:sax).permit(:title, :price, :timestamp, :address)
+  end
+
+  def asign
+    @address.title = @data[:title]
+    @address.price = @data[:price]
+    @address.timestamp = @data[:timestamp]
   end
 
   def scrape_role_access
@@ -65,6 +68,12 @@ class SaxesController < ApplicationController
     s.scrape(url).to_h
   end
 
+  def update
+    @address = Sax.find(@product.id)
+    asign
+    @address.update(sax_params)
+  end
+
   def check_in_db(title)
     @product = Sax.all.where(title: title)[0]
     if @product.nil?
@@ -72,9 +81,14 @@ class SaxesController < ApplicationController
     else
       if @product.timestamp == Date.today.to_datetime
         @address = @product
+        @info = 'Product has been scraped today'
         false
       else
-        true
+        if @product.timestamp < Date.today.to_datetime
+          update
+          @info = 'Product has been update'
+        end
+        false
       end
     end
   end
