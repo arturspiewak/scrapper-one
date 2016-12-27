@@ -18,6 +18,7 @@ gem 'haml'
 gem 'simple_form'
 gem 'poltergeist', '~> 1.12'
 gem 'phantomjs', '~> 2.1', '>= 2.1.1.0'
+gem 'devise', '~> 4.2'
 
 group :development, :test do
   gem 'byebug', platform: :mri
